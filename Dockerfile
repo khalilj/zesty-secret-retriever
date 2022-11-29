@@ -1,11 +1,11 @@
 FROM python:3.8-alpine
 
-WORKDIR /flask-app
-COPY ./requirements.txt /flask-app/requirements.txt
+WORKDIR /app
+COPY ./requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
 
-COPY flask-app.py /flask-app
-COPY ./app /flask-app/app
+COPY zesty-secret-retriever.py /app
+COPY ./app /app/app
 
 ENTRYPOINT [ "python" ]
-CMD ["flask-app.py" ]
+CMD ["zesty-secret-retriever.py" ]

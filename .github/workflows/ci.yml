@@ -10,7 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: "zesty-secret-retriever"
       DOCKER_REPOSITORY: "khalilj/zesty-secret-retriever"
       DOCKER_USER: "khalilj"
 
@@ -22,7 +21,7 @@ jobs:
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT\
       
     - name: Build the Docker image
-      run: docker build -t ${{ env.IMAGE_NAME }}:latest .
+      run: docker build -t ${{ env.DOCKER_REPOSITORY }}:latest .
 
     - name: Test
       run: echo "TODO - Test"
@@ -30,7 +29,6 @@ jobs:
     - name: Push to Docker Registry
       run: |
         echo ${{ secrets.DOCKER_REPOSITORY_PASS }} | docker login --username ${{ env.DOCKER_USER }} --password-stdin
-        docker tag ${{ env.IMAGE_NAME }}:latest ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ steps.git_sha.outputs.sha_short }}
-        docker tag ${{ env.IMAGE_NAME }}:latest ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
-        docker push ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ steps.git_sha.outputs.sha_short }}
-        docker push ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+        docker tag ${{ env.DOCKER_REPOSITORY }}:latest ${{ env.DOCKER_REPOSITORY }}:${{ steps.git_sha.outputs.sha_short }}
+        docker push ${{ env.DOCKER_REPOSITORY }}:latest
+        docker push ${{ env.DOCKER_REPOSITORY }}:${{ steps.git_sha.outputs.sha_short }}

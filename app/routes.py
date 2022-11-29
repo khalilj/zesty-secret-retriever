@@ -1,12 +1,16 @@
 from app import app
+import os
 
 @app.route('/health')
 def health():
     return {
         "status": "Healthy!",
-        "container": "https://docker.registry.com/somepath"
+        "container": os.environ.get('CONTAINER_IMAGE', '"khalilj/zesty-secret-retriever"')
     }
 
-@app.route('/v1/test')
-def test():
-    return 'this is Salt security'
+@app.route('/secret')
+def secret():
+    return {
+        "codeName": "<YOUR_CODENAME>",
+        "secretCode": "<SECRET_CODE>"
+    }

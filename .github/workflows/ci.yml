@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: "zesty-secret-retriever"
+      DOCKER_REPOSITORY: "khalilj/zesty-secret-retriever"
+      DOCKER_USER: "khalilj"
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Get git short sha
+      id: git_sha
+      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT\
+      
+    - name: Build the Docker image
+      run: docker build -t ${{ env.IMAGE_NAME }}:latest .
+
+    - name: Test
+      run: echo "TODO - Test"
+    
+    - name: Push to Docker Registry
+      run: |
+        echo ${{ secrets.DOCKER_REPOSITORY_PASS }} | docker login --username ${{ env.DOCKER_USER }} --password-stdin ${{ env.DOCKER_REPOSITORY }}
+        docker tag ${{ env.IMAGE_NAME }}:latest ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ steps.git_sha.outputs.sha_short }}
+        docker tag ${{ env.IMAGE_NAME }}:latest ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+        docker push ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ steps.git_sha.outputs.sha_short }}
+        docker push ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest

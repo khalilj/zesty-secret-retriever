@@ -29,6 +29,7 @@ jobs:
     
     - name: Push to Docker Registry
       run: |
+        echo ${{ secrets.DOCKER_REPOSITORY_PASS }} | docker login --username ${{ env.DOCKER_USER }} --password-stdin
         docker tag ${{ env.IMAGE_NAME }}:latest ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ steps.git_sha.outputs.sha_short }}
         docker tag ${{ env.IMAGE_NAME }}:latest ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
         docker push ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ steps.git_sha.outputs.sha_short }}

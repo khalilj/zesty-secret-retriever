@@ -24,7 +24,12 @@ jobs:
       run: docker build -t ${{ env.DOCKER_REPOSITORY }}:latest .
 
     - name: Test
-      run: echo "TODO - Test"
+      env:
+        CODE_NAME: ${{ secrets.CODE_NAME }}
+      run: |
+        docker-compose up -d --wait
+        curl http://127.0.0.1:8080/health
+        docker-compose down
     
     - name: Push to Docker Registry
       run: |

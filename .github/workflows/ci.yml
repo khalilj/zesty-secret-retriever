@@ -27,12 +27,9 @@ jobs:
       env:
         CODE_NAME: ${{ secrets.CODE_NAME }}
       run: |
-        docker-compose up -d
-        sleep 15 # Somehow --wait didn't work while it did locally
-        curl http://127.0.0.1:8080/health
-        docker-compose down
+        chmod 755 ./verification.sh
+        ./verification.sh
 
-    
     - name: Push to Docker Registry
       run: |
         echo ${{ secrets.DOCKER_REPOSITORY_PASS }} | docker login --username ${{ env.DOCKER_USER }} --password-stdin

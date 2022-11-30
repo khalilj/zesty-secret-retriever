@@ -17,9 +17,6 @@ jobs:
     - name: Get git short sha
       id: git_sha
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT\
-      
-    - name: Build the Docker image
-      run: docker build -t ${{ env.DOCKER_REPOSITORY }}:latest .
 
     - name: Test
       env:

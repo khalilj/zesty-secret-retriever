@@ -27,9 +27,10 @@ jobs:
       env:
         CODE_NAME: ${{ secrets.CODE_NAME }}
       run: |
-        docker-compose up -d --wait
+        curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
+        ./docker-compose up -d --wait
         curl http://127.0.0.1:8080/health
-        docker-compose down
+        ./docker-compose down
     
     - name: Push to Docker Registry
       run: |

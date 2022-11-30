@@ -28,6 +28,7 @@ jobs:
         CODE_NAME: ${{ secrets.CODE_NAME }}
       run: |
         curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
+        chmod 755 ./docker-compose
         ./docker-compose up -d --wait
         curl http://127.0.0.1:8080/health
         ./docker-compose down

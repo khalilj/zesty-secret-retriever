@@ -6,5 +6,5 @@
 * Implement docker compose with DynamoDB instance zestyco/namodb-challenge:amd - DONE
 * Implement connectivity from Flask app to mondo DB - DONE
 * Implement /secret endpoint - DONE
-* Implement test part of CI
-* Don't push to registry in case the test fails
+* Implement test part of CI - DONE
+* Don't push to registry in case the test fails - DONE
